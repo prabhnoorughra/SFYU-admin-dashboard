@@ -78,7 +78,6 @@ function HomePage() {
 
     if(loading) {
         //render loadpage
-        console.log("loading");
         return (
             <LoadPage message={"Loading..."}/>
         );
@@ -86,7 +85,6 @@ function HomePage() {
 
     if(error) {
         //render errorpage
-        console.log(error);
         return (
             <ErrorPage message={error}/>
         );

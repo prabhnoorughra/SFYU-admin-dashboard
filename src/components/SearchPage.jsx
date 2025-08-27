@@ -36,7 +36,6 @@ function SearchPage() {
                 (query ? `&search=${encodeURIComponent(query)}` : "");
 
             const finalURL = baseURL + options;
-            console.log(finalURL);
             const response = await fetch(finalURL, {
                 method: 'GET',
                 headers: {'Authorization': `Bearer ${token}`},
@@ -63,13 +62,7 @@ function SearchPage() {
         e.preventDefault();
         setPage(1);
         setQuery(searchTerm);
-        /* await fetchData(); */
-        console.log("done");
     }
-
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
 
 
     useEffect(() => {
@@ -88,7 +81,6 @@ function SearchPage() {
 
     if(loading) {
         //render loadpage
-        console.log("loading");
         return (
             <LoadPage message={"Loading..."}/>
         );
@@ -96,7 +88,6 @@ function SearchPage() {
 
     if(error) {
         //render errorpage
-        console.log(error);
         return (
             <ErrorPage message={error}/>
         );

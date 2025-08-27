@@ -35,7 +35,6 @@ function App() {
         const decoded = jwtDecode.jwtDecode(token);
         localStorage.setItem("token", token);
         setUser(decoded);
-        console.log(decoded);
       } catch(err) {
         console.error("Invalid token:", err);
         localStorage.removeItem("token");
