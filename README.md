@@ -6,6 +6,9 @@ Modern React dashboard for club executives to authenticate, review, search, and 
 
 - Tech Stack: Vite + React, Bootstrap, React Router, Vitest/Jest
 
+## Demo (Using Sample Data)
+https://github.com/user-attachments/assets/38c844eb-d07d-4af5-950d-d3a6608cb0f6
+
 ## Use Case
 - **Sign in as Admin** to manage incoming applications.
 - **Search & Filter** by name/email/student ID, study year (`First` → `Fifth+`), and email consent.
