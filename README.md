@@ -1,12 +1,35 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# STEM Fellowship @ YorkU — Admin Dashboard
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Modern React dashboard for club executives to authenticate, review, search, and filter student applications.
 
-## Expanding the ESLint configuration
+- Tech Stack: Vite + React, Bootstrap, React Router, Vitest/Jest
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Demo (Using Sample Data)
+https://github.com/user-attachments/assets/38c844eb-d07d-4af5-950d-d3a6608cb0f6
+
+## Use Case
+- **Sign in as Admin** to manage incoming applications.
+- **Search & Filter** by name/email/student ID, study year (`First` → `Fifth+`), and email consent.
+- **Pagination** and totals for fast browsing.
+- **Clean UX** with responsive layout and accessible components.
+
+## Key Features
+- **JWT auth flow** against the Backend API.
+- **Applications table/list** with:
+  - Free-text search (email, full name, student ID)
+  - Filters for `studyYear` and `emailConsent`
+  - Page/Take controls with total results
+- **Mobile-first design**: Responsive navbar, dropdown on small screens.
+
+## Communication with the Backend
+- **Auth**: `POST /adminlogin` → store JWT (Bearer) for future requests
+- **Public Site Analytics**:
+  - `GET /application?page=&take=&search=&studyYear=&emailConsent=`
+  - `GET /application/count`
+
+## Future Improvements
+- Give admins more permissions (editing/deleting applications)
+- Allow executives to log in and view data (no editing permissions)
+- Set up notifications to notify admins or executives of new applications
