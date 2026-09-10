@@ -13,6 +13,8 @@ function SearchPage() {
     const [loading, setLoading] = useState(false);
 
     const [studyYear, setStudyYear] = useState(null);
+    const [academicYear, setAcademicYear] = useState(null);
+    const [academicYears, setAcademicYears] = useState([]);
     const [emailConsent, setEmailConsent] = useState(null);
     const [query, setQuery] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +34,7 @@ function SearchPage() {
                 `?page=${page}` +
                 `&take=${take}` +
                 (studyYear ? `&studyYear=${encodeURIComponent(studyYear)}` : "") +
+                (academicYear ? `&academicYear=${encodeURIComponent(academicYear)}` : "") +
                 (typeof emailConsent === "boolean" ? `&emailConsent=${emailConsent}` : "") +
                 (query ? `&search=${encodeURIComponent(query)}` : "");
 
@@ -56,7 +59,29 @@ function SearchPage() {
             setError(err.message);
             setLoading(false);
         }
-    }, [apiURL, token, changeToken, navigate, page, query, emailConsent, studyYear]);
+    }, [apiURL, token, changeToken, navigate, page, query, emailConsent, studyYear, academicYear]);
+
+    useEffect(() => {
+        async function fetchYears() {
+            try {
+                const response = await fetch(`${apiURL}/application/years`, {
+                    method: 'GET',
+                    headers: {'Authorization': `Bearer ${token}`},
+                });
+                if(response.status === 401) {
+                    changeToken(null);
+                    navigate("/login");
+                    return;
+                }
+                if(!response.ok) return;
+                const data = await response.json();
+                setAcademicYears(data.years || []);
+            } catch {
+                // non-critical, the dropdown just stays empty
+            }
+        }
+        fetchYears();
+    }, [apiURL, token, changeToken, navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -67,10 +92,14 @@ function SearchPage() {
 
     useEffect(() => {
         fetchData();
-    }, [page, studyYear, emailConsent, query, fetchData])
+    }, [page, studyYear, academicYear, emailConsent, query, fetchData])
 
     function changeStudyYear(year) {
         setStudyYear(year);
+        setPage(1);
+    }
+    function changeAcademicYear(year) {
+        setAcademicYear(year);
         setPage(1);
     }
     function changeEmailConsent(setting) {
@@ -130,6 +159,27 @@ function SearchPage() {
                         </button>
                     </div>
                 </div>
+                <div className="nav-item dropdown mb-2 mb-md-0 me-2">
+                    <button className="btn btn-primary dropdown-toggle"
+                    type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown">
+                        Academic Year
+                    </button>
+                    <div className="dropdown-menu">
+                        {academicYears.map(year => (
+                            <button key={year}
+                                className={`dropdown-item btn btn-link ${academicYear === year ? "active" : ""}`}
+                                onClick={() => changeAcademicYear(year)}>
+                                {year}
+                            </button>
+                        ))}
+                        <div className="dropdown-divider"></div>
+                        <button className={`dropdown-item btn btn-link ${academicYear === null ? "active" : ""}`}
+                            onClick={() => changeAcademicYear(null)}>
+                            All
+                        </button>
+                    </div>
+                </div>
                 <div className="nav-item dropdown mb-2 mb-md-0">
                     <button className="btn btn-primary dropdown-toggle me-sm-4"
                     type="button" id="dropdownMenuButton"
@@ -167,6 +217,7 @@ function SearchPage() {
                                     setSearchTerm('');
                                     setEmailConsent(null);
                                     setStudyYear(null);
+                                    setAcademicYear(null);
                                     setPage(1);
                                 }}>
                                 Clear Search
@@ -208,6 +259,9 @@ function SearchPage() {
                                                 <div className='card-text d-flex justify-content-center gap-3'>
                                                     <span>Year: {app.studyYear}</span>
                                                     <span>Emails: {app.emailConsent ? "On" : "Off"}</span>
+                                                </div>
+                                                <div className='card-text text-center text-muted'>
+                                                    {app.academicYear}
                                                 </div>
                                             </div>
                                         </div>
